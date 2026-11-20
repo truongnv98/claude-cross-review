@@ -38,6 +38,26 @@ Bên dưới gọi thư mục đó là `<SKILL_DIR>`. Chạy lệnh từ thư m�
 
 ## Việc của em
 
+**Bước 0 — Cài đặt lần đầu (chỉ khi chưa có file cấu hình).** Kiểm tra
+`${CROSS_REVIEW_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/cross-review/config.env}`. Đã có → bỏ qua bước này.
+Chưa có → chạy `bash "<SKILL_DIR>/review.sh" --setup` (không tốn token), đọc báo cáo rồi:
+
+1. Dòng `THIẾU` công cụ (`gh`, `jq`, `timeout`…) hoặc `gh chưa đăng nhập` → báo user lệnh cài/đăng nhập
+   (macOS: `brew install gh jq coreutils`, `gh auth login`), dừng, chưa ghi config.
+2. `claude` / `codex` / `agy` chưa cài hoặc chưa đăng nhập → báo user lệnh đăng nhập (`codex login`, đăng
+   nhập agy, `claude` → `/login`). Còn ít nhất 2 model dùng được thì vẫn tiếp tục được; dưới 2 thì dừng.
+3. `agy không có <model>` → chọn model gemini tốt nhất trong danh sách báo cáo in ra, ưu tiên cùng dòng,
+   mức `medium` (vd `gemini-4-neon-medium`), ghi `GEMINI_MODEL`.
+4. Dòng `claude:` cho biết email đang dùng. Hỏi user đúng 1 câu: review bằng tài khoản Claude này, hay
+   một thư mục cấu hình Claude khác (vd tài khoản công ty)? Khác → ghi `CLAUDE_HOME` (+ `CLAUDE_EXPECT_EMAIL`
+   nếu user muốn khoá email), rồi chạy lại `--setup` để kiểm tài khoản đó đã đăng nhập.
+5. Ghi file cấu hình (tạo thư mục nếu chưa có), chỉ gồm các dòng khác mặc định + 1 dòng comment ngày tạo.
+   Không có gì khác mặc định thì vẫn ghi file chỉ có comment, để lần sau không chạy lại bước này.
+   Báo user 1–2 dòng: đã ghi gì, ở đâu, sửa lại thế nào. Rồi tiếp tục Bước A0.
+
+Model Codex / Claude mặc định không kiểm được miễn phí: nếu lần review đầu báo model đó lỗi kiểu "model
+không tồn tại / không có quyền", sửa `CODEX_MODEL` / `CLAUDE_MODEL` trong file cấu hình theo model user có.
+
 **Bước A0 — Jira (chỉ khi mô tả PR nhắc tới ticket và phiên này có Atlassian MCP).** Script tự lấy
 mô tả, commit, comment của PR; riêng Jira phải do em đọc (phiên headless không có MCP):
 

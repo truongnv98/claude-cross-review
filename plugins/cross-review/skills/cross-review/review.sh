@@ -36,6 +36,32 @@ CHECK_TIMEOUT="${CHECK_TIMEOUT:-20m}";   DEBATE_TIMEOUT="${DEBATE_TIMEOUT:-15m}"
 # ==============================
 
 SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
+# ---- --setup: kiểm tra máy (không tốn token) cho lần cài đầu; coordinator đọc báo cáo rồi ghi config ----
+if [[ "${1:-}" == "--setup" ]]; then
+  ok() { echo "OK   $*"; }; no() { echo "THIẾU $*"; }
+  command -v jq >/dev/null || { no "jq (cần để kiểm tra tiếp: brew install jq)"; exit 0; }
+  echo "CONFIG_FILE=$CONFIG_FILE ($([[ -f "$CONFIG_FILE" ]] && echo "đã có" || echo "chưa có"))"
+  for t in git gh jq perl timeout; do command -v "$t" >/dev/null && ok "$t" || no "$t"; done
+  gh auth status >/dev/null 2>&1 && ok "gh đã đăng nhập" || no "gh chưa đăng nhập (gh auth login)"
+  CENV=(env); [[ -n "$CLAUDE_HOME" ]] && CENV+=("CLAUDE_CONFIG_DIR=$CLAUDE_HOME")
+  if command -v claude >/dev/null; then
+    A="$("${CENV[@]}" claude auth status 2>/dev/null || true)"
+    if jq -e '.loggedIn == true' <<<"$A" >/dev/null 2>&1; then
+      ok "claude: $(jq -r '"\(.email // "?") · \(.subscriptionType // .authMethod // "?") · config \(.configDirectory // "mặc định")"' <<<"$A")"
+    else no "claude chưa đăng nhập${CLAUDE_HOME:+ (CLAUDE_HOME=$CLAUDE_HOME)}"; fi
+  else no "claude"; fi
+  if command -v codex >/dev/null; then
+    codex login status >/dev/null 2>&1 && ok "codex: $(codex login status 2>&1 | head -1) · model đang đặt: $CODEX_MODEL" || no "codex chưa đăng nhập (codex login)"
+  else no "codex"; fi
+  if command -v agy >/dev/null; then
+    GM="$(agy models 2>/dev/null | awk '{print $1}' | grep -E '^gemini' || true)"
+    if [[ -z "$GM" ]]; then no "agy chưa đăng nhập hoặc không có model gemini"
+    elif grep -qx "$GEMINI_MODEL" <<<"$GM"; then ok "agy: có $GEMINI_MODEL"
+    else no "agy không có $GEMINI_MODEL; model có: $(echo $GM)"; fi
+  else no "agy"; fi
+  exit 0
+fi
+
 # Công cụ bắt buộc (claude / codex / agy thiếu thì chỉ bỏ model đó)
 MISSING=(); for t in git gh jq perl timeout; do command -v "$t" >/dev/null || MISSING+=("$t"); done
 if [[ ${#MISSING[@]} -gt 0 ]]; then

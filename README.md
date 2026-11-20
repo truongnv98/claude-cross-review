@@ -38,12 +38,11 @@ Cập nhật bản mới: `/plugin marketplace update cross-review`.
 
 Thiếu `claude` / `codex` / `agy` thì model đó bị bỏ; cần ít nhất 2 trong 3.
 
-### Cấu hình (tuỳ chọn)
+### Cấu hình
 
-```bash
-mkdir -p ~/.config/cross-review
-cp config.example.env ~/.config/cross-review/config.env   # rồi sửa
-```
+Lần đầu chạy `/cross-review`, Claude tự kiểm máy (`review.sh --setup`, không tốn token): công cụ còn thiếu,
+3 CLI đã đăng nhập chưa, model Gemini nào có. Rồi nó hỏi bạn đúng 1 câu (dùng tài khoản Claude nào) và tự
+ghi `~/.config/cross-review/config.env`. Muốn tự sửa sau đó: xem mẫu `config.example.env`.
 
 Đổi được: model và effort từng bên, timeout, thư mục cấu hình Claude riêng (vd tài khoản công ty),
 email Claude bắt buộc. File này nằm trên máy bạn, không nằm trong repo.
