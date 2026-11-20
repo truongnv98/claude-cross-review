@@ -1,0 +1,13 @@
+{
+  "name": "cross-review",
+  "owner": { "name": "truongnv98" },
+  "metadata": { "description": "Cross-review PRs with Claude, Codex and Gemini (agy)." },
+  "plugins": [
+    {
+      "name": "cross-review",
+      "source": "./plugins/cross-review",
+      "description": "Review a GitHub PR with 3 models (Claude, Codex, Gemini via agy): independent reviews, merged list, cross-recheck, one debate round on disagreements.",
+      "version": "1.0.0"
+    }
+  ]
+}
