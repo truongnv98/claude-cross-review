@@ -96,7 +96,8 @@ Quyết từng lỗi:
     Ghi "Em quyết (lý do)".
 - Không tự quyết lỗi nào đang khác kết luận mà chưa qua tranh luận.
 
-Trả lời user bằng tiếng Việt, gọn:
+Trả lời user bằng ngôn ngữ user đang dùng trong cuộc trò chuyện (mặc định tiếng Việt), gọn. Nhãn trong mẫu
+dưới (Issue, ĐÚNG/SAI, Tìm bởi…) cũng dịch theo ngôn ngữ đó:
 
 Câu đầu: merge được / cần sửa trước khi merge, đếm theo mức. Model nào bị bỏ thì nói 1 dòng (lý do).
 Rồi blocker → major → minor, mỗi lỗi:

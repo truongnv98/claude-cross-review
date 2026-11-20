@@ -1,71 +1,77 @@
 # cross-review
 
-Plugin Claude Code review một GitHub PR bằng **3 model**: Claude, Codex và Gemini (qua `agy`).
+English | [Tiếng Việt](README.vi.md)
 
-1. Mỗi model review độc lập, song song.
-2. Gộp các danh sách lỗi thành một, ghi rõ model nào tìm ra.
-3. Mỗi model kiểm lại toàn bộ danh sách gộp (ĐÚNG / SAI / MỘT PHẦN + bằng chứng `file:line`).
-4. Lỗi nào các model khác kết luận thì tranh luận đúng 1 vòng.
-5. Phiên Claude Code của bạn tổng hợp kết quả cuối: lỗi theo mức, nguyên nhân, nên sửa ở app / giao diện / API.
+A Claude Code plugin that reviews a GitHub PR with **3 models**: Claude, Codex and Gemini (via `agy`).
 
-Model nào chưa đăng nhập, hết hạn mức hoặc lỗi thì tự bị bỏ (có ghi lý do). Còn dưới 2 model thì dừng.
-Mọi model chỉ đọc code: Claude chỉ có tool đọc, Codex chạy `--sandbox read-only`, agy chạy
-`--sandbox` với danh sách lệnh đọc cho phép sẵn.
+1. Each model reviews the PR independently, in parallel.
+2. The findings are merged into one list, noting which model found each issue.
+3. Every model rechecks the whole merged list (CORRECT / WRONG / PARTLY + `file:line` evidence).
+4. Issues where the models reach different conclusions get exactly one debate round.
+5. Your Claude Code session writes the final summary: issues by severity, the cause in plain words,
+   and whether the fix belongs in app logic, UI or the API.
 
-> Prompt và kết quả review viết bằng tiếng Việt.
+A model that is not logged in, out of quota or failing is dropped (with the reason). If fewer than
+2 models are left, the review stops. All models are read-only: Claude only gets read tools, Codex runs
+with `--sandbox read-only`, and agy runs with `--sandbox` and a list of allowed read commands.
 
-## Cài đặt
+> The final summary is written in the language you use with Claude Code. The internal prompts sent to
+> the models are in Vietnamese.
 
-Trong Claude Code:
+## Install
+
+In Claude Code:
 
 ```
 /plugin marketplace add truongnv98/claude-cross-review
 /plugin install cross-review@cross-review
 ```
 
-Cập nhật bản mới: `/plugin marketplace update cross-review`.
+Update to a new version: `/plugin marketplace update cross-review`.
 
-### Công cụ cần có
+### Requirements
 
-| Công cụ | Dùng để | Cài (macOS) |
+| Tool | Used for | Install (macOS) |
 |---|---|---|
-| `gh` (đã `gh auth login`) | lấy PR, diff, comment | `brew install gh` |
-| `git`, `jq`, `perl` | xử lý dữ liệu | `brew install jq` |
-| `timeout` | giới hạn thời gian mỗi bước | `brew install coreutils` |
-| `claude` (đã đăng nhập) | reviewer Claude | có sẵn khi dùng Claude Code |
-| `codex` (đã `codex login`) | reviewer Codex | xem tài liệu Codex CLI |
-| `agy` (đã đăng nhập) | reviewer Gemini | xem tài liệu Antigravity CLI |
+| `gh` (after `gh auth login`) | fetch the PR, diff and comments | `brew install gh` |
+| `git`, `jq`, `perl` | data handling | `brew install jq` |
+| `timeout` | time limit per step | `brew install coreutils` |
+| `claude` (logged in) | Claude reviewer | comes with Claude Code |
+| `codex` (after `codex login`) | Codex reviewer | see the Codex CLI docs |
+| `agy` (logged in) | Gemini reviewer | see the Antigravity CLI docs |
 
-Thiếu `claude` / `codex` / `agy` thì model đó bị bỏ; cần ít nhất 2 trong 3.
+If `claude`, `codex` or `agy` is missing, that model is skipped; at least 2 of the 3 are needed.
 
-### Cấu hình
+### Configuration
 
-Lần đầu chạy `/cross-review`, Claude tự kiểm máy (`review.sh --setup`, không tốn token): công cụ còn thiếu,
-3 CLI đã đăng nhập chưa, model Gemini nào có. Rồi nó hỏi bạn đúng 1 câu (dùng tài khoản Claude nào) và tự
-ghi `~/.config/cross-review/config.env`. Muốn tự sửa sau đó: xem mẫu `config.example.env`.
+The first time you run `/cross-review`, Claude checks your machine (`review.sh --setup`, uses no tokens):
+missing tools, whether the 3 CLIs are logged in, and which Gemini models you have. It then asks you one
+question (which Claude account to review with) and writes `~/.config/cross-review/config.env`.
+To edit it later, see `config.example.env`.
 
-Đổi được: model và effort từng bên, timeout, thư mục cấu hình Claude riêng (vd tài khoản công ty),
-email Claude bắt buộc. File này nằm trên máy bạn, không nằm trong repo.
+You can change: model and effort for each reviewer, timeouts, a separate Claude config directory
+(for example a work account), and a required Claude login email. The file stays on your machine, not in the repo.
 
-## Dùng
+## Usage
 
-Mở Claude Code trong thư mục repo cần review, rồi:
+Open Claude Code in the repository you want to review, then:
 
 ```
 /cross-review 123
-/cross-review https://github.com/org/repo/pull/123 tập trung vào xử lý lỗi mạng
+/cross-review https://github.com/org/repo/pull/123 focus on network error handling
 ```
 
-Review chạy nền khoảng 10–40 phút tuỳ độ lớn PR. Kết quả trung gian nằm ở `$TMPDIR/cross-review-<số PR>/`.
-Plugin không đăng gì lên GitHub.
+The review runs in the background, about 10–40 minutes depending on the PR size. Intermediate files are
+in `$TMPDIR/cross-review-<PR number>/`. The plugin never posts anything to GitHub.
 
-Nếu mô tả PR có mã Jira và phiên Claude Code có Atlassian MCP, ticket được đọc thêm làm ngữ cảnh.
+If the PR description mentions a Jira key and your Claude Code session has the Atlassian MCP, the ticket
+is read as extra context.
 
-## Lưu ý
+## Notes
 
-- Code của PR được gửi tới cả 3 nhà cung cấp (Anthropic, OpenAI, Google). Kiểm tra quy định bảo mật
-  của công ty bạn, và tắt chia sẻ dữ liệu để train trên tài khoản nếu cần.
-- Mọi lệnh gọi dùng CLI chính thức bằng tài khoản của chính bạn; không gọi API ẩn, không kiểm tra quota trước.
+- The PR's code is sent to all 3 providers (Anthropic, OpenAI, Google). Check your company's data
+  policy, and turn off "use my data for training" on your accounts if needed.
+- Every call uses the official CLIs with your own accounts: no hidden APIs, no quota probing.
 
 ## License
 
