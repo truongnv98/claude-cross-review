@@ -52,6 +52,10 @@ To edit it later, see `config.example.env`.
 You can change: model and effort for each reviewer, timeouts, a separate Claude config directory
 (for example a work account), and a required Claude login email. The file stays on your machine, not in the repo.
 
+Effort defaults to `medium` (Claude, Codex) and `gemini-4-neon-medium` on purpose, to save quota: `high`
+costs several times more. For a large PR that needs a deeper look, raise it for that run, e.g.
+`CLAUDE_EFFORT=high CODEX_EFFORT=high GEMINI_MODEL=gemini-4-neon-high`, or set it in `config.env`.
+
 ## Usage
 
 Open Claude Code in the repository you want to review, then:

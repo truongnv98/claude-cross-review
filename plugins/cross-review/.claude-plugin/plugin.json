@@ -1,6 +1,6 @@
 {
   "name": "cross-review",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Review a GitHub PR with 3 models (Claude, Codex, Gemini via agy): independent reviews, merged list, cross-recheck, one debate round on disagreements.",
   "author": { "name": "truongnv98" },
   "repository": "https://github.com/truongnv98/claude-cross-review",

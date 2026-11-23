@@ -12,6 +12,7 @@ Mỗi lỗi in đúng 1 khối:
 - Phản biện: bên khác đúng/sai ở đâu
 - Bằng chứng: `file:line`, đường đi của code, input/trạng thái cụ thể
 - Mức đúng: blocker | major | minor
-- Root cause / Solution: "giữ nguyên", hoặc bản sửa lại
+- Root cause: "giữ nguyên", hoặc bản sửa lại
+- Solution: chọn solution tốt nhất (của model nào hoặc cách tốt hơn) + lý do ngắn
 
-Không thêm lỗi mới. Dưới 600 từ.
+Không thêm lỗi mới. Viết gọn theo từng lỗi.

@@ -96,6 +96,11 @@ Quyết từng lỗi:
     Ghi "Em quyết (lý do)".
 - Không tự quyết lỗi nào đang khác kết luận mà chưa qua tranh luận.
 
+Chốt solution từng lỗi (từ solution từng model trong `merged.md` + cột Solution của bảng kết luận, + tranh luận nếu có):
+- Đa số model chọn cùng 1 cách → lấy cách đó.
+- Khác nhau → em chọn theo tiêu chí: sửa ở tầng gây lỗi, không lách, dùng lại pattern repo, sửa hết chỗ tương tự,
+  ít code. Ghi "Em quyết (lý do)". Không tự nghĩ cách mới khi các model đã có cách đạt tiêu chí.
+
 Trả lời user bằng ngôn ngữ user đang dùng trong cuộc trò chuyện (mặc định tiếng Việt), gọn. Nhãn trong mẫu
 dưới (Issue, ĐÚNG/SAI, Tìm bởi…) cũng dịch theo ngôn ngữ đó:
 
@@ -109,7 +114,7 @@ Rồi blocker → major → minor, mỗi lỗi:
 - **Sửa ở:** app (store) | giao diện | API — chỗ gây ra lỗi
 - **Chỗ tương tự:** `file:line`, … (gộp từ review + bổ sung ở recheck; bỏ dòng nếu không có)
 - **Đường vào:** … (chỉ khi lỗi phụ thuộc đường vào)
-- **Solution:** … (snippet ngắn nếu cần, sửa hết các chỗ tương tự)
+- **Solution:** … (snippet ngắn nếu cần, sửa hết các chỗ tương tự) · **Đề xuất bởi:** Codex · **Chọn:** Claude, Codex, Gemini (Em quyết: lý do — chỉ khi khác nhau)
 - **Tìm bởi:** Claude | Codex | Gemini | … · **Recheck:** Claude ĐÚNG, Codex SAI, Gemini ĐÚNG · **Tranh luận:** Codex đổi → ĐÚNG (chỉ khi có) · (Em quyết: lý do)
 ```
 

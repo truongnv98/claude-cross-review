@@ -49,6 +49,10 @@ ghi `~/.config/cross-review/config.env`. Muốn tự sửa sau đó: xem mẫu `
 Đổi được: model và effort từng bên, timeout, thư mục cấu hình Claude riêng (vd tài khoản công ty),
 email Claude bắt buộc. File này nằm trên máy bạn, không nằm trong repo.
 
+Effort mặc định để `medium` (Claude, Codex) và `gemini-4-neon-medium` cố ý, để tiết kiệm quota: mức `high`
+tốn quota gấp nhiều lần. PR lớn cần soi kỹ thì nâng riêng lần đó, vd
+`CLAUDE_EFFORT=high CODEX_EFFORT=high GEMINI_MODEL=gemini-4-neon-high`, hoặc ghi vào `config.env`.
+
 ## Dùng
 
 Mở Claude Code trong thư mục repo cần review, rồi:

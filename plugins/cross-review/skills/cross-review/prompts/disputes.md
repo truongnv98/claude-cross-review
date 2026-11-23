@@ -3,7 +3,7 @@ Không cần đọc code. In 2 phần, không thêm lỗi, không tự phán ai 
 
 ## Bảng kết luận
 Mỗi lỗi 1 dòng, đủ mọi lỗi I1..In, theo đúng recheck:
-`I<số> · <Model> <ĐÚNG|SAI|MỘT PHẦN> <mức> · <Model> … · Sửa lại: <bản sửa root cause/solution ngắn, chỉ khi có model ghi MỘT PHẦN hoặc sửa lại; không thì bỏ> · Bổ sung chỗ: <chỗ tương tự / đường vào các model ghi thêm, gộp bỏ trùng; không có thì bỏ>`
+`I<số> · <Model> <ĐÚNG|SAI|MỘT PHẦN> <mức> · <Model> … · Sửa lại: <bản sửa root cause/solution ngắn, chỉ khi có model ghi MỘT PHẦN hoặc sửa lại; không thì bỏ> · Bổ sung chỗ: <chỗ tương tự / đường vào các model ghi thêm, gộp bỏ trùng; không có thì bỏ> · Solution: <Model> chọn <Model|của mình|cách tốt hơn: ngắn>, … (mỗi model, kèm lý do ngắn)`
 
 ## Bất đồng
 Chỉ các lỗi có ít nhất 2 model khác KẾT LUẬN (ĐÚNG / SAI / MỘT PHẦN). Cùng kết luận mà khác mức

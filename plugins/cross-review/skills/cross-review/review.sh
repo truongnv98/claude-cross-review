@@ -134,7 +134,9 @@ HUMAN='.[] | select(.user.type != "Bot")'
     -q "$HUMAN | \"**\(.user.login)** \`\(.path):\(.line // .original_line)\`\(if .in_reply_to_id then \" (trả lời)\" else \"\" end):\n\(.body)\n\"" \
     | section "Comment inline"
   if [[ -n "${JIRA_FILE:-}" ]]; then section "Jira" < "$JIRA_FILE"; fi
-} | perl -CSD -0pe '$_ = substr($_, 0, 40000) . "\n…(cắt bớt)\n" if length > 40000' > "$DIR/context.md"
+} | perl -CSD -Mutf8 -0pe '
+  # Quá 40000 ký tự: cắt ở giữa (comment cũ), giữ đầu (mô tả PR) và cuối (comment mới nhất: thường ghi đã sửa gì).
+  $_ = substr($_, 0, 15000) . "\n…(cắt bớt phần giữa: comment cũ)\n" . substr($_, -25000) if length > 40000' > "$DIR/context.md"
 CONTEXT="$(cat "$DIR/context.md")"
 
 export N TITLE URL BASE HEAD SHA DIR FOCUS CONTEXT

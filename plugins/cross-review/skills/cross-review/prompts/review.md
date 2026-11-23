@@ -40,7 +40,14 @@ Chỉ báo lỗi đã kiểm chứng trong code. Mỗi lỗi:
 - Issue: input/trạng thái cụ thể gây lỗi
 - Chỗ tương tự: `file:line`, … (hoặc "Không có")
 - Đường vào: … (bỏ qua nếu lỗi không phụ thuộc đường vào)
-- Root cause · Solution · Confidence (high|medium)
+- Root cause · Confidence (high|medium)
+- Solution: cách sửa của em, theo tiêu chí bên dưới (snippet ngắn nếu cần)
+
+Tiêu chí solution (sửa thông minh, clean, best practice):
+- Sửa ở tầng gây ra lỗi (API / store / UI), không vá ở tầng khác cho xong.
+- Không lách: không setTimeout/delay, cờ tạm, callback vá, try/catch nuốt lỗi, check null cho qua.
+- Dùng lại helper / pattern có sẵn trong repo (dẫn `file:line` mẫu), theo rule repo.
+- Sửa hết chỗ tương tự, ít code nhất, có test cho lỗi logic.
 
 Không bắt lỗi style trừ khi vi phạm rule repo. Không có lỗi thì ghi "Không có lỗi".
 Chỉ in danh sách lỗi, viết gọn từng lỗi (khoảng 120 từ/lỗi), không giới hạn số lỗi.
