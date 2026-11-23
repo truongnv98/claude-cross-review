@@ -107,7 +107,9 @@ Rồi blocker → major → minor, mỗi lỗi:
 - **Issue:** …
 - **Root cause:** … (lời thường: chuyện gì xảy ra, vì sao)
 - **Sửa ở:** app (store) | giao diện | API — chỗ gây ra lỗi
-- **Solution:** … (snippet ngắn nếu cần)
+- **Chỗ tương tự:** `file:line`, … (gộp từ review + bổ sung ở recheck; bỏ dòng nếu không có)
+- **Đường vào:** … (chỉ khi lỗi phụ thuộc đường vào)
+- **Solution:** … (snippet ngắn nếu cần, sửa hết các chỗ tương tự)
 - **Tìm bởi:** Claude | Codex | Gemini | … · **Recheck:** Claude ĐÚNG, Codex SAI, Gemini ĐÚNG · **Tranh luận:** Codex đổi → ĐÚNG (chỉ khi có) · (Em quyết: lý do)
 ```
 
